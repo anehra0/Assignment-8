@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Ankush Nehra</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+    <meta name="description" content="Explore Ankush Nehra's projects including research work, case competitions, and technical projects">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Ankush Nehra</a>
+            <nav>
+                <ul>
+                   <li><a href="/index" class="active">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/resume">Resume</a></li>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>My Projects</h1>
+                    <p>Explore my work in research, case competitions, and technical projects</p>
+                </div>
+                <div class="hero-image hero-lab-image">
+                    <img src="/static/images/Lab_pic.jpg" alt="Busey Lab Experiment Photo" />
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Featured Projects</h2>
+            <div class="text-center mt-3">
+                <a href="/projects/add" class="btn">Add New Project</a>
+            </div>
+
+            {% if projects and projects|length > 0 %}
+            <table class="projects-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>
+                            {% if project.ImageFileName %}
+                                <img src="{{ url_for('static', filename='images/' ~ project.ImageFileName) }}" alt="{{ project.Title }}" class="project-thumb" />
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="placeholder" class="project-thumb" />
+                            {% endif %}
+                        </td>
+                        <td>{{ project.Title }}</td>
+                        <td>{{ project.Description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>No projects found. You can <a href="/projects/add">add a project</a>.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Technical Skills Demonstrated</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Programming Languages</h4>
+                    <ul>
+                        <li>Python - Data analysis and statistical modeling</li>
+                        <li>SQL - Database management and queries</li>
+                        <li>MATLAB - Scientific computing and analysis</li>
+                        <li>HTML/CSS - Web development and design</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>Data Analysis Tools</h4>
+                    <ul>
+                        <li>Excel - Spreadsheet analysis and reporting</li>
+                        <li>Looker Studio - Data visualization</li>
+                        <li>Statistical Analysis - Research methodology</li>
+                        <li>Data Cleaning - Process optimization</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>Enterprise Systems</h4>
+                    <ul>
+                        <li>SAP/ERP - Enterprise resource planning</li>
+                        <li>Epic EHR - Healthcare information systems</li>
+                        <li>System Integration - Cross-platform compatibility</li>
+                        <li>User Experience - Interface design</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Project Methodology</h2>
+            <p>My approach to projects combines analytical thinking from my scientific background with practical problem-solving skills developed through my Information Systems studies. I follow a structured methodology:</p>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>1. Analysis & Planning</h4>
+                    <ul>
+                        <li>Requirements gathering</li>
+                        <li>Stakeholder analysis</li>
+                        <li>Resource assessment</li>
+                        <li>Timeline development</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>2. Design & Development</h4>
+                    <ul>
+                        <li>Solution architecture</li>
+                        <li>Prototype development</li>
+                        <li>Iterative refinement</li>
+                        <li>Quality assurance</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>3. Implementation & Evaluation</h4>
+                    <ul>
+                        <li>Deployment planning</li>
+                        <li>Performance monitoring</li>
+                        <li>User feedback collection</li>
+                        <li>Continuous improvement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Future Projects</h2>
+            <p>I'm currently exploring several exciting opportunities in Information Systems:</p>
+            <ul>
+                <li><strong>Healthcare Analytics Platform:</strong> Developing a system to analyze patient data patterns and improve clinical decision-making</li>
+                <li><strong>Digital Transformation Consulting:</strong> Building frameworks for organizations transitioning to digital-first operations</li>
+                <li><strong>Data Visualization Dashboard:</strong> Creating interactive dashboards for business intelligence and reporting</li>
+                <li><strong>Machine Learning Applications:</strong> Exploring AI/ML applications in healthcare and business process optimization</li>
+            </ul>
+            
+            <div class="text-center mt-3">
+                <a href="/contact" class="btn">Collaborate on a Project</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/ankush-nehra" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="mailto:anehra@iu.edu">Email</a>
+                <a href="tel:+12604438756">Phone</a>
+                <a href="https://github.com/anehra0/Ankush-Nehra-Personal-Website-Assignment-Final" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+            <p>&copy; 2025 Ankush Nehra. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
