@@ -1,0 +1,44 @@
+# Use Python 3.11 slim image as base
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Set environment variables for testing
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_APP=flask_app/app.py
+ENV FLASK_ENV=testing
+ENV PYTEST_CURRENT_TEST=true
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire application
+COPY flask_app/ ./flask_app/
+COPY files/ ./files/
+
+# Copy test files
+COPY test_*.py ./
+COPY conftest.py ./
+COPY pytest.ini ./
+
+# Create a non-root user
+RUN adduser --disabled-password --gecos '' testuser && \
+    chown -R testuser:testuser /app
+USER testuser
+
+# Create directory for test reports
+RUN mkdir -p /app/test-reports
+
+# Default command runs tests
+CMD ["python", "-m", "pytest", "-v"]

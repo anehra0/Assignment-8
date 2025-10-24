@@ -1,0 +1,77 @@
+services:
+  # Testing service
+  flask-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - FLASK_ENV=testing
+      - PYTEST_CURRENT_TEST=true
+    volumes:
+      # Mount test reports directory for output
+      - ./test-reports:/app/test-reports
+    command: ["python", "-m", "pytest", "-v"]
+    profiles:
+      - testing
+
+  # Testing with coverage
+  flask-tests-coverage:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - FLASK_ENV=testing
+      - PYTEST_CURRENT_TEST=true
+    volumes:
+      - ./test-reports:/app/test-reports
+      - ./htmlcov:/app/htmlcov
+    command: ["python", "-m", "pytest", "--cov=flask_app", "--cov-report=html", "--cov-report=term-missing", "-v"]
+    profiles:
+      - testing
+
+  # Development testing (with live reload)
+  flask-tests-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - FLASK_ENV=development
+      - PYTEST_CURRENT_TEST=true
+    volumes:
+      - ./test-reports:/app/test-reports
+    command: ["python", "-m", "pytest", "-q"]
+    profiles:
+      - testing
+
+  # Production application (for integration testing)
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=flask_app/app.py
+    volumes:
+      - ./flask_app/projects.db:/app/flask_app/projects.db
+      - ./flask_app/static:/app/flask_app/static
+    restart: unless-stopped
+    profiles:
+      - production
+      - testing
+
+  # Integration testing with real app
+  flask-integration-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - FLASK_ENV=testing
+      - PYTEST_CURRENT_TEST=true
+      - FLASK_APP_URL=http://flask-app:5000
+    volumes:
+      - ./test-reports:/app/test-reports
+    command: ["python", "-m", "pytest", "test_integration.py", "-v"]
+    depends_on:
+      - flask-app
+    profiles:
+      - testing
